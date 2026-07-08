@@ -1,0 +1,54 @@
+{
+  "identity": {
+    "name": {
+      "value": "Tupac",
+      "updated": "2026-05-21"
+    },
+    "honorific": {
+      "value": "Se\u00f1or",
+      "updated": "2026-05-17"
+    },
+    "name_spelling": {
+      "value": "T\u00fapac (with accent on U)",
+      "updated": "2026-05-17"
+    },
+    "city": {
+      "value": "Lima, Peru",
+      "updated": "2026-05-17"
+    },
+    "mood": {
+      "value": "festive",
+      "updated": "2026-05-17"
+    },
+    "team_name": {
+      "value": "JARVIS"
+    }
+  },
+  "preferences": {
+    "address_form": {
+      "value": "Se\u00f1or",
+      "updated": "2026-05-17"
+    },
+    "local_model": {
+      "value": "Ollama P3"
+    },
+    "ai_models": {
+      "value": "Gemini, OpenRouter, Ollama P3"
+    }
+  },
+  "projects": {
+    "code_project_status": {
+      "value": "User deleted the entire code project.",
+      "updated": "2026-05-17"
+    },
+    "jarvis_update_status": {
+      "value": "Patches applied: terminal errors, file execution, file creation, system exploration. Integrated local AI option."
+    },
+    "jarvis_version": {
+      "value": "latest"
+    }
+  },
+  "relationships": {},
+  "wishes": {},
+  "notes": {}
+}

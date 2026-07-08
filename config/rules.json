@@ -1,0 +1,12 @@
+{
+    "rule_88866": {
+        "trigger": "buenos dias",
+        "action": "weather_report",
+        "parameters": {}
+    },
+    "rule_31992": {
+        "trigger": "buenos dias",
+        "action": "weather_report",
+        "parameters": {}
+    }
+}

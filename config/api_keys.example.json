@@ -1,0 +1,23 @@
+{
+    "gemini_api_key": "TU_API_KEY_DE_GEMINI_AQUI",
+    "openrouter_api_key": "",
+    "os_system": "windows",
+    "camera_index": 0,
+    "mic_device": 0,
+    "spk_device": 0,
+    "chrome_google_profile": "Default",
+    "chrome_exe_path": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+    "timezone": "America/Lima",
+    "language": "es-ES",
+    "user_name": "Túpac",
+    "thinking_sound": true,
+    "jarvis_voice": "Charon",
+    "mic_sensitivity": 0.003,
+    "spotify_client_id": "",
+    "spotify_client_secret": "",
+    "spotify_redirect_uri": "http://127.0.0.1:8888/callback",
+    "tmdb_api_key": "",
+    "jarvis_theme": "gold",
+    "gpu_acceleration": false,
+    "_note": "Copia este archivo como api_keys.json y completa tus claves. NUNCA subas api_keys.json a GitHub."
+}

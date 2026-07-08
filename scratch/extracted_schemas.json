@@ -1,0 +1,733 @@
+[
+  {
+    "name": "camera_bus",
+    "description": "Controla el subsistema de pilotaje y navegación gestual por cámara de JARVIS. Permite activar, desactivar o alternar el control gestual del mouse usando la webcam en segundo plano.",
+    "parameters": {
+      "type": "OBJECT",
+      "properties": {
+        "action": {
+          "type": "STRING",
+          "description": "enable (activar/conectar cámara gestual) | disable (desactivar/apagar cámara gestual) | toggle (alternar estado)"
+        }
+      },
+      "required": [
+        "action"
+      ]
+    }
+  },
+  {
+    "name": "jarvis_ui_control",
+    "description": "Control total sobre la ventana principal y los widgets de la interfaz de JARVIS. Permite minimizar/restaurar la ventana principal, o abrir, cerrar, alternar la visibilidad de cualquier widget del dashboard.\nWidgets disponibles: weather (clima), spotify (música), system (sistema), notes (notas), todo (tareas), maps (mapas), image (imágenes), camera (cámara).",
+    "parameters": {
+      "type": "OBJECT",
+      "properties": {
+        "action": {
+          "type": "STRING",
+          "description": "minimize (minimizar ventana) | restore (restaurar ventana) | show (mostrar widget) | hide (ocultar widget) | hide_all (ocultar todos los widgets) | toggle (alternar widget)"
+        },
+        "widget": {
+          "type": "STRING",
+          "description": "Nombre del widget (solo para show/hide/toggle): weather | spotify | system | notes | todo | maps | image | camera"
+        }
+      },
+      "required": [
+        "action"
+      ]
+    }
+  },
+  {
+    "name": "dev_agent",
+    "description": "Builds complete multi-file projects from scratch: plans, writes files, installs deps, opens VSCode, runs and fixes errors.",
+    "parameters": {
+      "type": "OBJECT",
+      "properties": {
+        "description": {
+          "type": "STRING",
+          "description": "What the project should do"
+        },
+        "language": {
+          "type": "STRING",
+          "description": "Programming language (default: python)"
+        },
+        "project_name": {
+          "type": "STRING",
+          "description": "Optional project folder name"
+        },
+        "timeout": {
+          "type": "INTEGER",
+          "description": "Run timeout in seconds (default: 30)"
+        }
+      },
+      "required": [
+        "description"
+      ]
+    }
+  },
+  {
+    "name": "agent_task",
+    "description": "Executes complex multi-step tasks requiring multiple different tools. Examples: 'research X and save to file', 'find and organize files'. DO NOT use for single commands. NEVER use for Steam/Epic — use game_updater.",
+    "parameters": {
+      "type": "OBJECT",
+      "properties": {
+        "goal": {
+          "type": "STRING",
+          "description": "Complete description of what to accomplish"
+        },
+        "priority": {
+          "type": "STRING",
+          "description": "low | normal | high (default: normal)"
+        }
+      },
+      "required": [
+        "goal"
+      ]
+    }
+  },
+  {
+    "name": "game_updater",
+    "description": "THE ONLY tool for ANY Steam or Epic Games request. Use for: installing, downloading, updating games, listing installed games, checking download status, scheduling updates. ALWAYS call directly for any Steam/Epic/game request. NEVER use agent_task, browser_control, or web_search for Steam/Epic.",
+    "parameters": {
+      "type": "OBJECT",
+      "properties": {
+        "action": {
+          "type": "STRING",
+          "description": "update | install | list | download_status | schedule | cancel_schedule | schedule_status (default: update)"
+        },
+        "platform": {
+          "type": "STRING",
+          "description": "steam | epic | both (default: both)"
+        },
+        "game_name": {
+          "type": "STRING",
+          "description": "Game name (partial match supported)"
+        },
+        "app_id": {
+          "type": "STRING",
+          "description": "Steam AppID for install (optional)"
+        },
+        "hour": {
+          "type": "INTEGER",
+          "description": "Hour for scheduled update 0-23 (default: 3)"
+        },
+        "minute": {
+          "type": "INTEGER",
+          "description": "Minute for scheduled update 0-59 (default: 0)"
+        },
+        "shutdown_when_done": {
+          "type": "BOOLEAN",
+          "description": "Shut down PC when download finishes"
+        }
+      },
+      "required": []
+    }
+  },
+  {
+    "name": "flight_finder",
+    "description": "Searches Google Flights and speaks the best options.",
+    "parameters": {
+      "type": "OBJECT",
+      "properties": {
+        "origin": {
+          "type": "STRING",
+          "description": "Departure city or airport code"
+        },
+        "destination": {
+          "type": "STRING",
+          "description": "Arrival city or airport code"
+        },
+        "date": {
+          "type": "STRING",
+          "description": "Departure date (any format)"
+        },
+        "return_date": {
+          "type": "STRING",
+          "description": "Return date for round trips"
+        },
+        "passengers": {
+          "type": "INTEGER",
+          "description": "Number of passengers (default: 1)"
+        },
+        "cabin": {
+          "type": "STRING",
+          "description": "economy | premium | business | first"
+        },
+        "save": {
+          "type": "BOOLEAN",
+          "description": "Save results to Notepad"
+        }
+      },
+      "required": [
+        "origin",
+        "destination",
+        "date"
+      ]
+    }
+  },
+  {
+    "name": "file_processor",
+    "description": "Processes any file that the user has uploaded or dropped onto the interface. Use this when the user refers to an uploaded file and wants an action on it. Supports: images (describe/ocr/resize/compress/convert), PDFs (summarize/extract_text/to_word), Word docs & text files (summarize/fix/reformat/translate), CSV/Excel (analyze/stats/filter/sort/convert), JSON/XML (validate/format/analyze), code files (explain/review/fix/optimize/run/document/test), audio (transcribe/trim/convert/info), video (trim/extract_audio/extract_frame/compress/transcribe/info), archives (list/extract), presentations (summarize/extract_text). ALWAYS call this tool when a file has been uploaded and the user gives a command about it. If the user's command is ambiguous, pick the most logical action for that file type.",
+    "parameters": {
+      "type": "OBJECT",
+      "properties": {
+        "file_path": {
+          "type": "STRING",
+          "description": "Full path to the uploaded file. Leave empty to use the currently uploaded file."
+        },
+        "action": {
+          "type": "STRING",
+          "description": "What to do with the file. Examples by type:\nimage: describe | ocr | resize | compress | convert | info\npdf: summarize | extract_text | to_word | info\ndocx/txt: summarize | fix | reformat | translate_hint | word_count | to_bullet\ncsv/excel: analyze | stats | filter | sort | convert | info\njson: validate | format | analyze | to_csv\ncode: explain | review | fix | optimize | run | document | test\naudio: transcribe | trim | convert | info\nvideo: trim | extract_audio | extract_frame | compress | transcribe | info | convert\narchive: list | extract\npptx: summarize | extract_text | analyze"
+        },
+        "instruction": {
+          "type": "STRING",
+          "description": "Free-form instruction if action doesn't cover it. E.g. 'translate this to Turkish', 'find all email addresses'"
+        },
+        "format": {
+          "type": "STRING",
+          "description": "Target format for conversion. E.g. 'mp3', 'pdf', 'csv', 'png'"
+        },
+        "width": {
+          "type": "INTEGER",
+          "description": "Target width for image resize"
+        },
+        "height": {
+          "type": "INTEGER",
+          "description": "Target height for image resize"
+        },
+        "scale": {
+          "type": "NUMBER",
+          "description": "Scale factor for image resize (e.g. 0.5)"
+        },
+        "quality": {
+          "type": "INTEGER",
+          "description": "Quality 1-100 for image/video compress"
+        },
+        "start": {
+          "type": "STRING",
+          "description": "Start time for trim: seconds or HH:MM:SS"
+        },
+        "end": {
+          "type": "STRING",
+          "description": "End time for trim: seconds or HH:MM:SS"
+        },
+        "timestamp": {
+          "type": "STRING",
+          "description": "Timestamp for video frame extraction HH:MM:SS"
+        },
+        "column": {
+          "type": "STRING",
+          "description": "Column name for CSV filter/sort"
+        },
+        "value": {
+          "type": "STRING",
+          "description": "Filter value for CSV filter"
+        },
+        "condition": {
+          "type": "STRING",
+          "description": "Filter condition: equals|contains|gt|lt"
+        },
+        "ascending": {
+          "type": "BOOLEAN",
+          "description": "Sort order for CSV sort (default: true)"
+        },
+        "save": {
+          "type": "BOOLEAN",
+          "description": "Save result to file (default: true)"
+        },
+        "destination": {
+          "type": "STRING",
+          "description": "Output folder for archive extract"
+        }
+      },
+      "required": []
+    }
+  },
+  {
+    "name": "codebase",
+    "description": "Indexación y búsqueda inteligente de proyectos de código. Indexar proyectos, buscar en archivos, encontrar símbolos (funciones/clases), generar documentación automática, búsqueda avanzada de código. Usar para: 'buscar en mi proyecto', 'dónde está la función X', 'generar docs', 'indexar mi código'.",
+    "parameters": {
+      "type": "OBJECT",
+      "properties": {
+        "action": {
+          "type": "STRING",
+          "description": "index | list | info | search | find_symbol | generate_docs | remove"
+        },
+        "path": {
+          "type": "STRING",
+          "description": "Ruta del proyecto a indexar"
+        },
+        "name": {
+          "type": "STRING",
+          "description": "Nombre del proyecto (default: nombre de carpeta)"
+        },
+        "project": {
+          "type": "STRING",
+          "description": "Nombre del proyecto para info/search/find_symbol"
+        },
+        "query": {
+          "type": "STRING",
+          "description": "Texto a buscar en el código"
+        },
+        "symbol": {
+          "type": "STRING",
+          "description": "Nombre de función/clase a buscar"
+        },
+        "file_path": {
+          "type": "STRING",
+          "description": "Ruta del archivo para generate_docs"
+        }
+      },
+      "required": [
+        "action"
+      ]
+    }
+  },
+  {
+    "name": "social_media",
+    "description": "Controla redes sociales: Twitter/X, Instagram, TikTok y LinkedIn. Twitter: publicar tweets, ver timeline, buscar, like, retweet, ver perfil. Instagram: publicar fotos, subir historias, enviar DMs, ver feed, like, comentar. TikTok: subir videos, ver perfil/stats, tendencias. LinkedIn: publicar posts, ver perfil, ver feed, enviar mensajes. SIEMPRE usar para cualquier pedido de redes sociales. Para WhatsApp usar la herramienta 'whatsapp'. Usá action=setup para ver cómo configurar las credenciales.",
+    "parameters": {
+      "type": "OBJECT",
+      "properties": {
+        "platform": {
+          "type": "STRING",
+          "description": "twitter | instagram | tiktok | linkedin | setup"
+        },
+        "action": {
+          "type": "STRING",
+          "description": "Twitter: tweet, delete_tweet, like, retweet, timeline, search_tweets, my_tweets, profile | Instagram: post/upload_photo, story, send_dm, feed, profile, like, comment | TikTok: upload/publicar, profile/perfil, trending | LinkedIn: post/publicar, profile/perfil, send_message/mensaje, feed"
+        },
+        "text": {
+          "type": "STRING",
+          "description": "Texto del tweet/post/comentario/mensaje"
+        },
+        "content": {
+          "type": "STRING",
+          "description": "Contenido del post (LinkedIn/TikTok)"
+        },
+        "tweet_id": {
+          "type": "STRING",
+          "description": "ID del tweet para like/retweet/delete"
+        },
+        "media_id": {
+          "type": "STRING",
+          "description": "ID del post de Instagram para like/comment"
+        },
+        "username": {
+          "type": "STRING",
+          "description": "Usuario para DM/perfil (Instagram, TikTok, LinkedIn)"
+        },
+        "receiver": {
+          "type": "STRING",
+          "description": "Destinatario del DM de Instagram"
+        },
+        "image_path": {
+          "type": "STRING",
+          "description": "Ruta imagen para Instagram/LinkedIn"
+        },
+        "video_path": {
+          "type": "STRING",
+          "description": "Ruta del video para TikTok"
+        },
+        "caption": {
+          "type": "STRING",
+          "description": "Descripción/caption de la foto o video"
+        },
+        "query": {
+          "type": "STRING",
+          "description": "Búsqueda de tweets"
+        },
+        "count": {
+          "type": "INTEGER",
+          "description": "Cantidad de resultados (default: 5)"
+        }
+      },
+      "required": [
+        "platform",
+        "action"
+      ]
+    }
+  },
+  {
+    "name": "windows_settings",
+    "description": "Control TOTAL de configuraciones de Windows. Usar para CUALQUIER pedido relacionado con configuración del sistema. Categorías disponibles:\n• display: brillo, resolución, frecuencia, escala, modo oscuro/noche, HDR, orientación, monitores\n• audio: volumen, mute, dispositivos de audio/micrófono, mezclador\n• network: WiFi (listar/conectar/desconectar/on/off), IP, DNS, flush_dns, modo avión, Bluetooth, proxy\n• power: plan energía, suspender, hibernar, batería, timeouts, inicio rápido\n• system: info del sistema, nombre PC, fecha/hora, zona horaria, reiniciar, apagar, bloquear, variables de entorno\n• personalization: fondo de pantalla, tema, transparencia, barra de tareas, protector de pantalla\n• apps: listar apps, desinstalar, apps de inicio, aplicaciones predeterminadas\n• security: Windows Defender, firewall, UAC, BitLocker, usuarios del sistema\n• input: velocidad mouse, doble clic, scroll, botones, velocidad teclado, idioma\n• storage: discos, espacio, limpieza de archivos temporales, papelera, defrag, chkdsk\n• services: listar/iniciar/detener/reiniciar servicios de Windows, procesos, kill\n• privacy: cámara/micrófono privacidad, ubicación, telemetría, notificaciones, portapapeles\n• registry: leer, escribir, eliminar claves del registro, exportar\n• accessibility: lupa, narrador, alto contraste, teclado en pantalla\n• open_settings: abrir panel específico de Configuración de Windows\nSIEMPRE llamar para cualquier pedido de configuración, ajuste o control del sistema Windows.",
+    "parameters": {
+      "type": "OBJECT",
+      "properties": {
+        "action": {
+          "type": "STRING",
+          "description": "La acción a realizar. Ejemplos por categoría:\ndisplay: get_brightness | set_brightness | get_resolution | set_resolution | set_refresh_rate | get_scaling | set_scaling | night_light_on | night_light_off | hdr_on | hdr_off | set_orientation | list_monitors | open\naudio: get_volume | set_volume | mute | unmute | toggle_mute | list_devices | set_device | get_mic_volume | set_mic_volume | open\nnetwork: list_wifi | connect_wifi | disconnect_wifi | wifi_on | wifi_off | get_ip | set_dns | flush_dns | airplane_on | airplane_off | bluetooth_on | bluetooth_off | set_proxy | disable_proxy | open\npower: get_plan | set_plan | list_plans | sleep | hibernate | battery_status | set_sleep_timeout | set_screen_timeout | fast_startup_on | fast_startup_off | open\nsystem: info | get_hostname | set_hostname | get_datetime | set_datetime | set_timezone | restart | shutdown | lock | get_env | set_env | delete_env | open\npersonalization: set_wallpaper | get_wallpaper | dark_mode | light_mode | transparency_on | transparency_off | taskbar_position | screensaver | open\napps: list | uninstall | startup_apps | set_default | open\nsecurity: defender_scan | defender_status | firewall_on | firewall_off | firewall_status | uac_level | bitlocker_status | list_users | add_user | open\ninput: get_mouse_speed | set_mouse_speed | swap_buttons | get_keyboard_speed | set_keyboard_speed | list_languages | add_language | open\nstorage: list_drives | disk_usage | cleanup | empty_trash | clean_temp | defrag | chkdsk | open\nservices: list | start | stop | restart | status | list_processes | kill_process | open\nprivacy: camera_on | camera_off | mic_on | mic_off | location_on | location_off | telemetry_level | notifications_on | notifications_off | clipboard_history_on | clipboard_history_off | open\nregistry: read | write | delete | export\naccessibility: magnifier_on | magnifier_off | narrator_on | narrator_off | high_contrast_on | high_contrast_off | osk_on | open\nopen_settings: <nombre del panel, ej: display, sound, wifi, bluetooth, apps>"
+        },
+        "value": {
+          "type": "STRING",
+          "description": "Valor para la acción (ej: 80 para brillo, 'Dark' para tema, SSID para wifi, etc.)"
+        },
+        "value2": {
+          "type": "STRING",
+          "description": "Segundo valor cuando se necesitan dos parámetros (ej: contraseña de WiFi, valor de registro)"
+        },
+        "name": {
+          "type": "STRING",
+          "description": "Nombre del servicio, proceso, usuario, app, o variable de entorno"
+        },
+        "hive": {
+          "type": "STRING",
+          "description": "Para registry: HKLM | HKCU | HKCR | HKU | HKCC"
+        },
+        "key": {
+          "type": "STRING",
+          "description": "Para registry: ruta de la clave del registro"
+        },
+        "reg_name": {
+          "type": "STRING",
+          "description": "Para registry: nombre del valor del registro"
+        },
+        "reg_type": {
+          "type": "STRING",
+          "description": "Para registry: REG_SZ | REG_DWORD | REG_BINARY | REG_EXPAND_SZ"
+        },
+        "path": {
+          "type": "STRING",
+          "description": "Ruta de archivo (para wallpaper, export registry, etc.)"
+        },
+        "monitor": {
+          "type": "INTEGER",
+          "description": "Índice del monitor (0, 1, 2…)"
+        },
+        "width": {
+          "type": "INTEGER",
+          "description": "Ancho de resolución"
+        },
+        "height": {
+          "type": "INTEGER",
+          "description": "Alto de resolución"
+        }
+      },
+      "required": [
+        "action"
+      ]
+    }
+  },
+  {
+    "name": "image_generation",
+    "description": "Genera imágenes con inteligencia artificial a partir de una descripción en texto. Usa Pollinations.ai (gratis, open-source, sin API key) o Gemini. SIEMPRE llamar cuando el usuario pide 'generame una imagen', 'crea una foto de', 'dibujame', 'haceme una imagen', 'quiero una foto de', o 'mostrame', etc. Después de generar, la imagen se muestra automáticamente en el widget de JARVIS.",
+    "parameters": {
+      "type": "OBJECT",
+      "properties": {
+        "prompt": {
+          "type": "STRING",
+          "description": "Descripción detallada de la imagen a generar"
+        },
+        "count": {
+          "type": "INTEGER",
+          "description": "Cantidad de imágenes (1-4, default: 1)"
+        },
+        "aspect_ratio": {
+          "type": "STRING",
+          "description": "Relación de aspecto: 1:1 | 4:3 | 3:4 | 16:9 | 9:16 (default: 1:1)"
+        },
+        "save_path": {
+          "type": "STRING",
+          "description": "Carpeta de guardado (default: ~/Pictures/JARVIS_Generadas)"
+        }
+      },
+      "required": [
+        "prompt"
+      ]
+    }
+  },
+  {
+    "name": "smart_home",
+    "description": "Controla las luces y dispositivos inteligentes del hogar. Soporta Tuya/Smart Life, Philips Hue, LIFX y Yeelight. SIEMPRE llamar para: encender/apagar luces, cambiar color, brillo, temperatura de color, activar escenas, consultar estado. Si no hay dispositivos configurados, usar action=setup para ver instrucciones.",
+    "parameters": {
+      "type": "OBJECT",
+      "properties": {
+        "action": {
+          "type": "STRING",
+          "description": "on | off | toggle | color | brightness | temperature | scene | status | list | setup"
+        },
+        "device": {
+          "type": "STRING",
+          "description": "Nombre o sala del dispositivo (ej: 'sala', 'cuarto', 'lampara principal'). Omitir = todos."
+        },
+        "color": {
+          "type": "STRING",
+          "description": "Color: nombre (rojo, azul, blanco, cálido…) o hex #RRGGBB"
+        },
+        "value": {
+          "type": "INTEGER",
+          "description": "Valor numérico para brightness (1-100) o temperatura Kelvin (1700-9000)"
+        },
+        "brightness": {
+          "type": "INTEGER",
+          "description": "Brillo 1-100 (alternativa a value)"
+        },
+        "scene": {
+          "type": "STRING",
+          "description": "Nombre de la escena: relajar, leer, trabajar, noche, fiesta"
+        },
+        "protocol": {
+          "type": "STRING",
+          "description": "tuya | hue | lifx | yeelight. Omitir = usa el configurado por defecto."
+        },
+        "group": {
+          "type": "STRING",
+          "description": "Nombre del grupo/sala en Philips Hue"
+        }
+      },
+      "required": [
+        "action"
+      ]
+    }
+  },
+  {
+    "name": "system_monitor",
+    "description": "Monitorea el rendimiento del sistema en tiempo real: CPU, RAM, GPU, discos, red, temperatura, batería, procesos activos, uptime. Usar para: '¿cómo está la PC?', 'qué proceso consume más', 'temperatura del CPU', 'cuánta RAM libre tengo', 'matar proceso X', 'resumen de rendimiento'.",
+    "parameters": {
+      "type": "OBJECT",
+      "properties": {
+        "action": {
+          "type": "STRING",
+          "description": "cpu | ram | disk | network | gpu | temperature | battery | uptime | processes | kill | report"
+        },
+        "sort_by": {
+          "type": "STRING",
+          "description": "Para processes: cpu (default) | ram"
+        },
+        "count": {
+          "type": "INTEGER",
+          "description": "Para processes: cantidad a mostrar (default: 10)"
+        },
+        "name": {
+          "type": "STRING",
+          "description": "Para kill: nombre o PID del proceso"
+        }
+      },
+      "required": [
+        "action"
+      ]
+    }
+  },
+  {
+    "name": "document_creator",
+    "description": "Creates Word documents (.docx) or Excel spreadsheets (.xlsx) locally, OR Google Docs / Google Sheets in the cloud. Use when the user asks to create a document, report, letter, table, spreadsheet, budget, list, or any file with structured content. For documents: provide title and content (use ## for headings, - for bullet lists). For spreadsheets: provide title and sheets with headers and rows. Always call this tool — never just say you created it.",
+    "parameters": {
+      "type": "OBJECT",
+      "properties": {
+        "action": {
+          "type": "STRING",
+          "description": "word — create a local .docx Word file | excel — create a local .xlsx Excel file | google_doc — create a Google Doc in the cloud | google_sheet — create a Google Sheet in the cloud"
+        },
+        "title": {
+          "type": "STRING",
+          "description": "Title or filename of the document/spreadsheet"
+        },
+        "content": {
+          "type": "STRING",
+          "description": "For word / google_doc: full text content. Use ## Section for main headings, # SubSection for sub-headings, - item for bullet points, blank line between paragraphs."
+        },
+        "sheets": {
+          "type": "ARRAY",
+          "description": "For excel / google_sheet: list of sheet objects. Each object has: name (string), headers (array of strings), rows (array of arrays with cell values).",
+          "items": {
+            "type": "OBJECT",
+            "properties": {
+              "name": {
+                "type": "STRING",
+                "description": "Sheet tab name"
+              },
+              "headers": {
+                "type": "ARRAY",
+                "items": {
+                  "type": "STRING"
+                },
+                "description": "Column headers"
+              },
+              "rows": {
+                "type": "ARRAY",
+                "items": {
+                  "type": "ARRAY",
+                  "items": {
+                    "type": "STRING"
+                  }
+                },
+                "description": "Data rows"
+              }
+            }
+          }
+        },
+        "save_path": {
+          "type": "STRING",
+          "description": "Optional: full file path to save locally (e.g. C:/Users/User/Desktop/report.docx). Defaults to ~/Documents/"
+        }
+      },
+      "required": [
+        "action",
+        "title"
+      ]
+    }
+  },
+  {
+    "name": "tiktok_analyzer",
+    "description": "Analiza un perfil público de TikTok dado su URL. Extrae el nombre, bio, seguidores, y para cada video reciente: vistas, likes, comentarios y guardados. Siempre usar cuando el usuario pida analizar un perfil de TikTok o consultar estadísticas de videos de TikTok.",
+    "parameters": {
+      "type": "OBJECT",
+      "properties": {
+        "profile_url": {
+          "type": "STRING",
+          "description": "URL completa del perfil de TikTok (ej: https://www.tiktok.com/@usuario)"
+        },
+        "max_videos": {
+          "type": "INTEGER",
+          "description": "Cantidad máxima de videos a analizar (default: 8)"
+        }
+      },
+      "required": [
+        "profile_url"
+      ]
+    }
+  },
+  {
+    "name": "accessibility",
+    "description": "Modulo de accesibilidad universal. Incluye: task_simplify (descomponer tareas complejas en pasos simples), emotional (regulacion emocional y analisis de tono de voz), routine (rutinas diarias gamificadas con racha y progreso), eye_tracking (control por seguimiento ocular con webcam), micro_movement (navegacion por movimientos de cabeza), speech_config (ajustar tolerancia del reconocimiento de voz). Usar cuando el usuario pida: 'simplificame esto', 'ayudame con mi rutina', 'necesito organizarme', 'activar seguimiento ocular', 'ajusta la tolerancia de voz', 'ejercicio de respiracion', 'complete mi tarea', 'agregar rutina'. SIEMPRE ofrecer alternativas multimodales.",
+    "parameters": {
+      "type": "OBJECT",
+      "properties": {
+        "action": {
+          "type": "STRING",
+          "description": "task_simplify — descomponer texto en pasos simples | emotional — intervencion emocional | routine — gestion de rutinas gamificadas | eye_tracking — control ocular | micro_movement — micromovimientos | speech_config — tolerancia de voz | feedback — feedback visual/haptico | config — ver o cambiar configuracion"
+        },
+        "text": {
+          "type": "STRING",
+          "description": "Texto a simplificar (para task_simplify)"
+        },
+        "format": {
+          "type": "STRING",
+          "description": "Formato: steps (default) | summary | explain"
+        },
+        "name": {
+          "type": "STRING",
+          "description": "Nombre de rutina (para routine add/complete)"
+        },
+        "setting": {
+          "type": "STRING",
+          "description": "Clave de configuracion a ver o cambiar"
+        },
+        "value": {
+          "type": "STRING",
+          "description": "Valor para la configuracion"
+        },
+        "level": {
+          "type": "NUMBER",
+          "description": "Nivel de tolerancia (0.1-1.0) o sensibilidad"
+        },
+        "stress_level": {
+          "type": "NUMBER",
+          "description": "Nivel de estres estimado (0.0-1.0)"
+        }
+      },
+      "required": [
+        "action"
+      ]
+    }
+  },
+  {
+    "name": "morning_brief",
+    "description": "Genera el informe matutino inteligente de JARVIS. Incluye saludo personalizado, hora, fecha, clima actual, objetivos activos y consejo del día. Usar cuando el usuario pida: 'informe del día', 'brief matutino', 'qué hay hoy', 'resumen del día', 'buenos días JARVIS', o al iniciar el día.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "force": {
+          "type": "boolean",
+          "description": "Si True, genera el informe aunque ya se haya dado hoy."
+        }
+      },
+      "required": []
+    }
+  },
+  {
+    "name": "vision_guardian",
+    "description": "Controla el Guardian de Visión Ambiental de JARVIS — monitoreo proactivo de pantalla. Analiza la pantalla periódicamente con IA y ofrece ayuda contextual cuando detecta algo relevante. Usar cuando el usuario diga: 'activa el guardian', 'desactiva el guardian', 'vigila mi pantalla', 'deja de vigilar', 'analiza mi pantalla ahora', 'estado del guardian', 'cambia el intervalo'.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "action": {
+          "type": "string",
+          "enum": [
+            "status",
+            "enable",
+            "disable",
+            "check_now",
+            "set_interval"
+          ],
+          "description": "Acción: status | enable | disable | check_now | set_interval"
+        },
+        "seconds": {
+          "type": "integer",
+          "description": "Para set_interval: segundos entre análisis (30-600)"
+        }
+      },
+      "required": [
+        "action"
+      ]
+    }
+  },
+  {
+    "name": "accessibility_overlay",
+    "description": "Muestra, oculta o alterna la barra flotante de accesibilidad JARVIS sobre el escritorio. USAR cuando el usuario diga: 'mostrar barra de accesibilidad', 'abrir panel de accesibilidad', 'activar barra para ciegos', 'cerrar barra', 'ocultar barra de accesibilidad', 'alternar barra', 'barra de accesibilidad'.",
+    "parameters": {
+      "type": "OBJECT",
+      "properties": {
+        "action": {
+          "type": "STRING",
+          "description": "show — mostrar | hide — cerrar | toggle — alternar | status — estado actual"
+        }
+      },
+      "required": [
+        "action"
+      ]
+    }
+  },
+  {
+    "name": "openrouter_agent",
+    "description": "Delega una tarea intelectualmente compleja, de análisis o redacción larga a OpenRouter (un motor de texto alternativo). Usar cuando el usuario pida: 'usa openrouter para esto', 'consulta a claude', 'usa otro modelo', 'analiza este código largo', 'redacta un ensayo', o cuando percibas que la tarea es puramente de texto avanzado.",
+    "parameters": {
+      "type": "OBJECT",
+      "properties": {
+        "query": {
+          "type": "STRING",
+          "description": "El prompt o instrucción completa para el agente de OpenRouter"
+        },
+        "model": {
+          "type": "STRING",
+          "description": "Opcional. Modelo a usar, por defecto google/gemini-2.5-flash"
+        }
+      },
+      "required": [
+        "query"
+      ]
+    }
+  },
+  {
+    "name": "native_ui",
+    "description": "Automatización de Interfaz Nativa de Windows (UI Automation). USAR para listar, enfocar, escribir o hacer clic en ventanas de forma 100% precisa, saltándose la visión. Esto EVITA errores de cuota (Error 429) y permite simulación exacta de teclado/mouse.",
+    "parameters": {
+      "type": "OBJECT",
+      "properties": {
+        "action": {
+          "type": "STRING",
+          "description": "Acción a realizar: list_windows | focus_window | type_in_window | click_center"
+        },
+        "window_title": {
+          "type": "STRING",
+          "description": "El nombre (o parte del nombre) de la ventana destino. (Ej: 'WhatsApp', 'Chrome')"
+        },
+        "text": {
+          "type": "STRING",
+          "description": "El texto a escribir (solo si action es type_in_window)"
+        }
+      },
+      "required": [
+        "action"
+      ]
+    }
+  }
+]

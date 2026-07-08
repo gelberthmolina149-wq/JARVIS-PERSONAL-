@@ -1,0 +1,65 @@
+qt.qpa.window: SetProcessDpiAwarenessContext() failed: Acceso denegado.
+Qt's default DPI awareness context is DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2. If you know what you are doing, you can overwrite this default using qt.conf (https://doc.qt.io/qt-6/highdpi.html#configuring-windows).
+js: Uncaught ReferenceError: THREE is not defined
+Traceback (most recent call last):
+  File "C:\Users\User\AppData\Local\Programs\Python\Python314\Lib\site-packages\google\genai\live.py", line 537, in _receive
+    raw_response = await self._ws.recv(decode=False)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\User\AppData\Local\Programs\Python\Python314\Lib\site-packages\websockets\asyncio\connection.py", line 324, in recv
+    raise self.protocol.close_exc from self.recv_exc
+websockets.exceptions.ConnectionClosedError: received 1007 (invalid frame payload data) Request contains an invalid argument.; then sent 1007 (invalid frame payload data) Request contains an invalid argument.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\User\Documents\jarvis-personal\main.py", line 2944, in _receive_audio
+    async for response in self.session.receive():
+    ...<54 lines>...
+                raise
+  File "C:\Users\User\AppData\Local\Programs\Python\Python314\Lib\site-packages\google\genai\live.py", line 456, in receive
+    while result := await self._receive():
+                    ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\User\AppData\Local\Programs\Python\Python314\Lib\site-packages\google\genai\live.py", line 547, in _receive
+    errors.APIError.raise_error(code, reason, None)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\User\AppData\Local\Programs\Python\Python314\Lib\site-packages\google\genai\errors.py", line 188, in raise_error
+    raise cls(status_code, response_json, response)
+google.genai.errors.APIError: 1007 None. Request contains an invalid argument.
+  + Exception Group Traceback (most recent call last):
+  |   File "C:\Users\User\Documents\jarvis-personal\main.py", line 3099, in run
+  |     asyncio.TaskGroup() as tg,
+  |     ~~~~~~~~~~~~~~~~~^^
+  |   File "C:\Users\User\AppData\Local\Programs\Python\Python314\Lib\asyncio\taskgroups.py", line 72, in __aexit__
+  |     return await self._aexit(et, exc)
+  |            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  |   File "C:\Users\User\AppData\Local\Programs\Python\Python314\Lib\asyncio\taskgroups.py", line 174, in _aexit
+  |     raise BaseExceptionGroup(
+  |     ...<2 lines>...
+  |     ) from None
+  | ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)
+  +-+---------------- 1 ----------------
+    | Traceback (most recent call last):
+    |   File "C:\Users\User\AppData\Local\Programs\Python\Python314\Lib\site-packages\google\genai\live.py", line 537, in _receive
+    |     raw_response = await self._ws.recv(decode=False)
+    |                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "C:\Users\User\AppData\Local\Programs\Python\Python314\Lib\site-packages\websockets\asyncio\connection.py", line 324, in recv
+    |     raise self.protocol.close_exc from self.recv_exc
+    | websockets.exceptions.ConnectionClosedError: received 1007 (invalid frame payload data) Request contains an invalid argument.; then sent 1007 (invalid frame payload data) Request contains an invalid argument.
+    | 
+    | During handling of the above exception, another exception occurred:
+    | 
+    | Traceback (most recent call last):
+    |   File "C:\Users\User\Documents\jarvis-personal\main.py", line 2944, in _receive_audio
+    |     async for response in self.session.receive():
+    |     ...<54 lines>...
+    |                 raise
+    |   File "C:\Users\User\AppData\Local\Programs\Python\Python314\Lib\site-packages\google\genai\live.py", line 456, in receive
+    |     while result := await self._receive():
+    |                     ^^^^^^^^^^^^^^^^^^^^^
+    |   File "C:\Users\User\AppData\Local\Programs\Python\Python314\Lib\site-packages\google\genai\live.py", line 547, in _receive
+    |     errors.APIError.raise_error(code, reason, None)
+    |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+    |   File "C:\Users\User\AppData\Local\Programs\Python\Python314\Lib\site-packages\google\genai\errors.py", line 188, in raise_error
+    |     raise cls(status_code, response_json, response)
+    | google.genai.errors.APIError: 1007 None. Request contains an invalid argument.
+    +------------------------------------
